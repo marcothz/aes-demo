@@ -7,25 +7,25 @@ var key = "DY7durYvbzBsp6pUReI/SJK+HMyf6ZcgelaBjDa3Ww8="
 var iv = "kS9/qz1lvIINJyQIsMWtUw=="
 
 // Plain text to be encrypted, formatted as: <Unix Timestamp>\t<MSISDN>
-var plainText = "1607698641\t5511987651234"
+var samplePlainText = "1607698641\t5511987651234"
 
-if(plainText !== null)
+if(samplePlainText !== null)
 {
-  console.log(`Encrypting plain text: \"${plainText}\"`)
+  console.log(`Encrypting plain text: \"${samplePlainText}\"`)
 
-  var result = aesEncryptionHelper.encrypt(plainText, key, iv, "base64")
+  var result = aesEncryptionHelper.encrypt(samplePlainText, key, iv, "base64")
 
   console.log(`  >> Cipher text: \"${result}\"`)
 }
 
-// Base 64 encrypted plain text to be decrypted
-var cipherText = "5YLuMt8auSVXz3tIjLnsBPBk+iANikf2h9JrJzArYi4="
+// Encrypted plain text to be decrypted (base 64 encoded)
+var sampleCipherText = "5YLuMt8auSVXz3tIjLnsBPBk+iANikf2h9JrJzArYi4="
 
-if(cipherText !== null)
+if(sampleCipherText !== null)
 {
-  console.log(`Decrypting cipher text: \"${cipherText}\"`)
+  console.log(`Decrypting cipher text: \"${sampleCipherText}\"`)
 
-  var result = aesEncryptionHelper.decrypt(cipherText, key, iv, "base64")
+  var result = aesEncryptionHelper.decrypt(sampleCipherText, key, iv, "base64")
 
   console.log(`  >> Plain text: \"${result}\"`)
 }
