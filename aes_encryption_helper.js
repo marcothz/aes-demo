@@ -1,36 +1,31 @@
-"use strict";
-var crypto = require("crypto");
+'use strict';
+const crypto = require('crypto');
 
-var AesEncryptionHelper = (function () {
+const AesEncryptionHelper = (function () {
 
-    var cipher_alg = "aes256"
+    const cipher_alg = 'aes256'
 
-    function encrypt(plainText, key, iv, encoding) {
+    function encrypt(data, key, iv) {
 
-        var keyBuf = Buffer.from(key, 'base64'); 
-        var ivBuf = Buffer.from(iv, 'base64'); 
+        const keyBuf = Buffer.from(key, 'base64'); 
+        const ivBuf = Buffer.from(iv, 'base64'); 
 
-        var cipher = crypto.createCipheriv(cipher_alg, keyBuf, ivBuf);
+        const cipher = crypto.createCipheriv(cipher_alg, keyBuf, ivBuf);
 
-        encoding = encoding || "binary";
+        const updateBuf = cipher.update(data, 'utf8');
+        const finalBuf = cipher.final();
 
-        var result = cipher.update(plainText, "utf8", encoding);
-       
-        result += cipher.final(encoding);
-
-        return result;
+        return Buffer.concat([updateBuf, finalBuf]);
     }
 
-    function decrypt(cipherText, key, iv, encoding) {
+    function decrypt(data, key, iv) {
 
-        var keyBuf = Buffer.from(key, 'base64'); 
-        var ivBuf = Buffer.from(iv, 'base64'); 
+        const keyBuf = Buffer.from(key, 'base64'); 
+        const ivBuf = Buffer.from(iv, 'base64'); 
 
-        var decipher = crypto.createDecipheriv(cipher_alg, keyBuf, ivBuf);
+        const decipher = crypto.createDecipheriv(cipher_alg, keyBuf, ivBuf);
 
-        encoding = encoding || "binary";
-
-        var result = decipher.update(cipherText, encoding);
+        var result = decipher.update(data);
 
         result += decipher.final();
 
