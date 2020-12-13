@@ -13,7 +13,7 @@ const iv = 'kS9/qz1lvIINJyQIsMWtUw=='
 // Sample plain text to be encrypted, formatted as: <Unix Timestamp>\t<MSISDN>
 const samplePlainText = '1607713294\t5511987651234'
 // Sample encrypted text to be decrypted (base 64 encoded)
-const sampleCipherText = 'AxtWjt9dSJPPmLqP6MHQYKwEcKo6HrYGkDUs8ZSCFzCD'
+const sampleCipherText = '4GUXQLpRYEa2eacfuCqzuYbrCFWFNqUjNpjFrJ21WoFE'
 
 if(samplePlainText !== null)
 {
