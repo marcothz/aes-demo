@@ -11,9 +11,9 @@ const iv = 'kS9/qz1lvIINJyQIsMWtUw=='
 // -- CHANGE THESE VALUES TO DO YOUR OWN TESTING --
 
 // Sample plain text to be encrypted, formatted as: <Unix Timestamp>\t<MSISDN>
-const samplePlainText = '1607713294\t5511987651234'
+const samplePlainText = '1607813598\t5511984651020\t29358230010'
 // Sample encrypted text to be decrypted (base 64 encoded)
-const sampleCipherText = '4GUXQLpRYEa2eacfuCqzuYbrCFWFNqUjNpjFrJ21WoFE'
+const sampleCipherText = '2nGfXPWPtLd49R3g8XsQ2TDxkERDnJUhMjeZEFkkb9CxhRQudpkwBBg7Q7hSmJ1fZt'
 
 if(samplePlainText !== null)
 {
