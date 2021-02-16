@@ -6,11 +6,7 @@ const AesEncryptionHelper = (function () {
     const cipher_alg = 'aes256'
 
     function encrypt(data, key, iv) {
-
-        const keyBuf = Buffer.from(key, 'base64') 
-        const ivBuf = Buffer.from(iv, 'base64') 
-
-        const cipher = crypto.createCipheriv(cipher_alg, keyBuf, ivBuf)
+        const cipher = crypto.createCipheriv(cipher_alg, key, iv)
 
         const updateBuf = cipher.update(data, 'utf8')
         const finalBuf = cipher.final()
@@ -19,11 +15,7 @@ const AesEncryptionHelper = (function () {
     }
 
     function decrypt(data, key, iv) {
-
-        const keyBuf = Buffer.from(key, 'base64') 
-        const ivBuf = Buffer.from(iv, 'base64') 
-
-        const decipher = crypto.createDecipheriv(cipher_alg, keyBuf, ivBuf)
+        const decipher = crypto.createDecipheriv(cipher_alg, key, iv)
 
         var result = decipher.update(data)
 

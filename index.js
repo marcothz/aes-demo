@@ -19,7 +19,7 @@ const iv = 'FvnmDu4pA8KZQnbXNGr2eJ'
 const data = '1609256168\t5511984651020\t29358230010'
 
 // Sample encrypted token to be decrypted (base 58 encoded)
-const token = 'FvnmDu4pA8KZQnbXNGr2eJ.6VWMT7CvfDJjSE8o8pyJs3h6RAuMQSG1wg99YZDcdZi4Kr9RVbgTvUn5UcYUHXpfjR'
+const token = 'FvnmDu4pA8KZQnbXNGr2eJ.MExztQPgnq1DwYr69dCKK3bE4NLz4uXJUvLP1T643cFKXgQU7mTwSGYfdYAESv3F7'
 
 if(data !== null)
 {
@@ -49,8 +49,11 @@ if(token !== null)
 }
 
 function encodeToken(data, key, iv) {
+  const decodedKey = Buffer.from(key, 'base64') 
+  const decodedIV = bs58.decode(iv)
+
   // Encrypt the provided plain text
-  const buffer = aes.encrypt(data, key, iv, 'base64')
+  const buffer = aes.encrypt(data, decodedKey, decodedIV)
   
   // Then, encode it as base58 to make it human and URL friendly
   return bs58.encode(buffer)
@@ -59,5 +62,8 @@ function encodeToken(data, key, iv) {
 function decodeToken(token, key) {
   const [iv, data] = token.split('.');
   
-  return aes.decrypt( bs58.decode(data), key, iv)
+  const decodedKey = Buffer.from(key, 'base64') 
+  const decodedIV = bs58.decode(iv) 
+
+  return aes.decrypt( bs58.decode(data), decodedKey, decodedIV)
 }
