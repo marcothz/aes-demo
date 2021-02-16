@@ -1,42 +1,63 @@
 const bs58 = require('bs58')
 const aes = require('./aes_encryption_helper')
+const crypto = require('crypto');
 
-// -- ⚠ THIS KEY AND INITIALIZATION VECTOR ARE PUBLIC AND FOR DEMONSTRATION PURPOSES ONLY. DO NOT USE THEM IN PRODUCTION ⚠ --
-
-// 32-bit key (base 64 encoded)
-const key = 'DY7durYvbzBsp6pUReI/SJK+HMyf6ZcgelaBjDa3Ww8='
-// 16-bit initialization vector (base 64 encoded) 
-const iv = 'kS9/qz1lvIINJyQIsMWtUw=='
+const randomIV = bs58.encode(crypto.randomBytes(16))
+console.log(`An example of a randomically generated IV is "${randomIV}"`);
 
 // -- CHANGE THESE VALUES TO DO YOUR OWN TESTING --
 
-// Sample plain text to be encrypted, formatted as: <Unix Timestamp>\t<MSISDN>
-const samplePlainText = '1607813598\t5511984651020\t29358230010'
-// Sample encrypted text to be decrypted (base 64 encoded)
-const sampleCipherText = '2nGfXPWPtLd49R3g8XsQ2TDxkERDnJUhMjeZEFkkb9CxhRQudpkwBBg7Q7hSmJ1fZt'
+// -- ⚠ THIS KEY IS PUBLIC AND FOR DEMONSTRATION PURPOSES ONLY. DO NOT USE IT IN PRODUCTION ⚠ --
 
-if(samplePlainText !== null)
+// Sample 32-bit key (base 64 encoded)
+const key = 'DY7durYvbzBsp6pUReI/SJK+HMyf6ZcgelaBjDa3Ww8='
+
+// Sample 16-bit initialization vector (base 58 encoded) 
+const iv = 'FvnmDu4pA8KZQnbXNGr2eJ'
+
+// Sample plain text to be encrypted, formatted as: <Unix Timestamp>\t<MSISDN>\t<CPF>
+const data = '1609256168\t5511984651020\t29358230010'
+
+// Sample encrypted token to be decrypted (base 58 encoded)
+const token = 'FvnmDu4pA8KZQnbXNGr2eJ.6VWMT7CvfDJjSE8o8pyJs3h6RAuMQSG1wg99YZDcdZi4Kr9RVbgTvUn5UcYUHXpfjR'
+
+if(data !== null)
 {
-  console.log(`Encrypting plain text: \'${samplePlainText}\'`)
+  console.log();
+  console.log(`-- Encoding token -------------------------------------------`)
+  console.log(`>> Data: \'${data}\'`)
+  console.log(`>> Key: \'${key}\'`)
+  console.log(`>> IV: \'${iv}\'`)
 
-  // Encrypt the provided plain text
-  const buffer = aes.encrypt(samplePlainText, key, iv, 'base64')
-  
-  // Then, encode it as base58 to make it human and URL friendly
-  const cipherText = bs58.encode(buffer)
+  const result = encodeToken(data, key, iv)
 
-  console.log(`  >> Cipher text: \'${cipherText}\'`)
+  console.log()
+  console.log(`<< Token: \'${iv}.${result}\'`)
 }
 
-if(sampleCipherText !== null)
+if(token !== null)
 {
-  console.log(`Decrypting cipher text: \'${sampleCipherText}\'`)
+  console.log()
+  console.log(`-- Decoding token -------------------------------------------`)
+  console.log(`>> Token: \'${token}\'`)
+  console.log(`>> Key: \'${key}\'`)
 
-  // Decode the provided cipher text from base58
-  const data = bs58.decode(sampleCipherText)
+  const result = decodeToken(token, key)
 
-  // Then, decrypt it
-  const plainText = aes.decrypt(data, key, iv)
+  console.log()
+  console.log(`<< Data: \'${result}\'`)
+}
 
-  console.log(`  >> Plain text: \'${plainText}\'`)
+function encodeToken(data, key, iv) {
+  // Encrypt the provided plain text
+  const buffer = aes.encrypt(data, key, iv, 'base64')
+  
+  // Then, encode it as base58 to make it human and URL friendly
+  return bs58.encode(buffer)
+}
+
+function decodeToken(token, key) {
+  const [iv, data] = token.split('.');
+  
+  return aes.decrypt( bs58.decode(data), key, iv)
 }
